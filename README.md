@@ -1,2 +1,3 @@
 # image_tools
-Some useful tools for image processing.
+
+Some useful tools for processing images.
