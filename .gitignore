@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Uncompleted
+exr_tools/mergexr_cpp
