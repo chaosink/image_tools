@@ -1,6 +1,6 @@
 #!/bin/sh
 
-./subtitle_stack.py merge.png 64 \
+./subtitle_stack.py stack.png 64 \
 	test_1.png \
 	test_2.png \
 	test_3.png \

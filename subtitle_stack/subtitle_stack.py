@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import cv2
+import imageio as iio
 import sys
 import os
 import numpy as np
@@ -28,10 +28,12 @@ else:
 	for i in range(3, len(sys.argv)):
 		files.append(sys.argv[i])
 
-result = cv2.imread(files[0])
+result = iio.imread(files[0])
 height_image = result.shape[0]
 
 for i in range(1, len(files)):
-	image = cv2.imread(files[i])
+	image = iio.imread(files[i])
 	result = np.append(result, image[height_image - height_subtitle:,:], axis=0)
-cv2.imwrite(sys.argv[1], result)
+iio.imwrite(sys.argv[1], result)
+
+print("Stacked image saved as", sys.argv[1])

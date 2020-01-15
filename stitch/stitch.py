@@ -2,7 +2,7 @@
 
 import sys
 import numpy as np
-import cv2 as cv
+import imageio as iio
 
 if len(sys.argv) < 4:
 	print("stitch:")
@@ -26,14 +26,16 @@ if len(sys.argv) < x*y+2:
 	exit()
 
 for i in range(y):
-	row = cv.imread(sys.argv[i * x + 3])
+	row = iio.imread(sys.argv[i * x + 3])
 	for j in range(1, x):
 		ai = i * x + j + 3
-		im = cv.imread(sys.argv[ai])
+		im = iio.imread(sys.argv[ai])
 		row = np.concatenate((row, im), axis=1)
 	if i == 0:
 		result = row
 	else:
 		result = np.concatenate((result, row), axis=0)
 
-cv.imwrite(sys.argv[2], result)
+iio.imwrite(sys.argv[2], result)
+
+print("Stitched image saved as", sys.argv[2])

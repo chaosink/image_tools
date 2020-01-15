@@ -2,6 +2,7 @@
 
 import sys
 import cv2 as cv
+import imageio as iio
 
 if len(sys.argv) < 5:
 	print("scale: Scale images using cubic/linear interpolation.")
@@ -14,7 +15,7 @@ if len(sys.argv) > 5:
 else:
 	scale_y = scale_x
 
-image = cv.imread(sys.argv[1])
+image = iio.imread(sys.argv[1])
 if sys.argv[3] == 'cubic':
 	image = cv.resize(image, (0, 0), image, scale_x, scale_y, cv.INTER_CUBIC)
 elif sys.argv[3] == 'linear':
@@ -23,4 +24,6 @@ else:
 	print("Invalid scale method:", sys.argv[3])
 	exit()
 
-cv.imwrite(sys.argv[2], image)
+iio.imwrite(sys.argv[2], image)
+
+print("Scaled image saved as", sys.argv[2])
