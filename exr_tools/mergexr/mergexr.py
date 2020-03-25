@@ -4,7 +4,7 @@ import os, sys
 import pyexr
 
 if len(sys.argv) != 3:
-	print("mergeexr: Merge multiple EXRs into a single one with multiple channels.")
+	print("mergexr: Merge multiple EXRs into a single one with multiple channels.")
 	print("Usage: mergexr.py input_dir output_file")
 	exit()
 
