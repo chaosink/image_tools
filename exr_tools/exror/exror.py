@@ -3,7 +3,7 @@
 import sys
 import numpy as np
 import pyexr
-from skimage.measure import compare_ssim, compare_mse, compare_psnr
+from skimage.metrics import structural_similarity, mean_squared_error, peak_signal_noise_ratio
 
 import importlib.util
 spec = importlib.util.spec_from_file_location("*", "/media/lin/MintSpace/program/CV_IP/image_tools/exr_tools/exrtime/exrtime.py")
@@ -52,9 +52,9 @@ if img0.shape != img1.shape:
 	print("	image1:", img1.shape)
 	exit(1)
 
-ssim = compare_ssim(img1, img0, multichannel=True, gaussian_weights=True)
-# psnr = compare_psnr(img1, img0, 255)
-mse = compare_mse(img1, img0)
+ssim = structural_similarity(img1, img0, multichannel=True, gaussian_weights=True)
+# psnr = peak_signal_noise_ratio(img1, img0, 255)
+mse = mean_squared_error(img1, img0)
 time = exrtime(sys.argv[1])
 if time:
 	print("Time:", time)
