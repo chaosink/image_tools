@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-import sys
+import sys, os
 import numpy as np
 import pyexr
 from skimage.metrics import structural_similarity, mean_squared_error, peak_signal_noise_ratio
 
 import importlib.util
-spec = importlib.util.spec_from_file_location("*", "/media/lin/MintSpace/program/CV_IP/image_tools/exr_tools/exrtime/exrtime.py")
+script_dir = os.path.dirname(os.path.realpath(__file__))
+spec = importlib.util.spec_from_file_location("*", os.path.join(script_dir, "../exrtime/exrtime.py"))
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 exrtime = module.exrtime
