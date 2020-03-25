@@ -7,8 +7,8 @@ import Imath
 import numpy as np
 
 if len(sys.argv) < 4:
-	print("exrmul: Multiply EXR image by a factor.")
-	print("Usage: exrmul.py factor input.exr output.exr")
+	print("exrscale: Scale EXR image by a factor.")
+	print("Usage: exrscale.py factor input.exr output.exr")
 	exit(0)
 
 print("This program can't retain all the logs into the output EXR. Don't use it.")
