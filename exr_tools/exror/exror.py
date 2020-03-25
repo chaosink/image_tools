@@ -12,24 +12,24 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 exrtime = module.exrtime
 
-def SSE(img0, img1):
-	d = img0 - img1
+def SSE(img_refer, img_noisy):
+	d = img_noisy - img_refer
 	d *= d
 	sse = d.sum()
 	return sse
 
-def MSE(img0, img1):
-	sse = SSE(img0, img1)
-	mse = sse / img0.size
+def MSE(img_refer, img_noisy):
+	sse = SSE(img_refer, img_noisy)
+	mse = sse / img_noisy.size
 	return mse
 
-def RMSE(img0, img1):
-	d = img0 - img1
+def RMSE(img_refer, img_noisy):
+	d = img_noisy - img_refer
 	d *= d
-	ref = img1 * img1 + 0.01
+	ref = img_refer * img_refer + 0.01
 	d = d / ref
 	rmse = d.sum()
-	rmse = rmse / img0.size
+	rmse = rmse / img_noisy.size
 	return rmse
 
 # def CorrectGamma(Mat &img)
@@ -41,24 +41,31 @@ def RMSE(img0, img1):
 
 if len(sys.argv) < 3:
 	print("exror: Evaluate image in MSE, rMSE and SSIM.")
-	print("Usage: exror.py noisy_image reference_image")
+	print("Usage: exror.py reference_image noisy_image [other_noisy_image]")
 	exit(0)
 
-img0 = pyexr.read(sys.argv[1]).astype(np.float64)
-img1 = pyexr.read(sys.argv[2]).astype(np.float64)
+img_refer_name = sys.argv[1]
+img_refer = pyexr.read(img_refer_name).astype(np.float64)
 
-if img0.shape != img1.shape:
-	print("Images have different sizes:")
-	print("	image0:", img0.shape)
-	print("	image1:", img1.shape)
-	exit(1)
+print()
+for i in range(2, len(sys.argv)):
+	img_noisy_name = sys.argv[i]
+	img_noisy = pyexr.read(img_noisy_name).astype(np.float64)
 
-ssim = structural_similarity(img1, img0, multichannel=True, gaussian_weights=True)
-# psnr = peak_signal_noise_ratio(img1, img0, 255)
-mse = mean_squared_error(img1, img0)
-time = exrtime(sys.argv[1])
-if time:
-	print("Time:", time)
-print("MSE :", mse)
-print("RMSE:", RMSE(img0, img1))
-print("SSIM:", ssim)
+	if img_noisy.shape != img_refer.shape:
+		print("Images have different sizes:")
+		print("	%s:" % img_refer_name, img_refer.shape)
+		print("	%s:" % img_noisy_name, img_noisy.shape)
+		exit(1)
+
+	ssim = structural_similarity(img_refer, img_noisy, multichannel=True, gaussian_weights=True)
+	# psnr = peak_signal_noise_ratio(img_refer, img_noisy, 255)
+	mse = mean_squared_error(img_refer, img_noisy)
+	time = exrtime(sys.argv[1])
+	print(img_noisy_name)
+	if time:
+		print("Time:", time)
+	print("MSE :", mse)
+	print("RMSE:", RMSE(img_refer, img_noisy))
+	print("SSIM:", ssim)
+	print()
