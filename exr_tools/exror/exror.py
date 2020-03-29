@@ -61,7 +61,7 @@ for i in range(2, len(sys.argv)):
 	ssim = structural_similarity(img_refer, img_noisy, multichannel=True, gaussian_weights=True)
 	# psnr = peak_signal_noise_ratio(img_refer, img_noisy, 255)
 	mse = mean_squared_error(img_refer, img_noisy)
-	time = exrtime(sys.argv[1])
+	time = exrtime(img_noisy_name)
 	print(img_noisy_name)
 	if time:
 		print("Time:", time)
