@@ -26,12 +26,14 @@ def exrtime(image):
 
 if __name__ == '__main__':
 	if len(sys.argv) < 2:
-		print("exrtime: Get the timing log recording the time used for generating the EXR.")
-		print("Usage: exrtime image.exr")
+		print("exrtime: Get the timing log recording the time used for generating the EXRs.")
+		print("Usage: exrtime image0.exr [image1.exr ...]")
 		exit(0)
-	time = exrtime(sys.argv[1])
-	if time:
-		print(time)
-		os.system("echo -n %s | xclip -selection clipboard" % time)
-	else:
-		print("No time information")
+	for file in sys.argv[1:]:
+		time = exrtime(file)
+		print(file)
+		if time:
+			print(time)
+			os.system("echo -n %s | xclip -selection clipboard" % time)
+		else:
+			print("No time information")
