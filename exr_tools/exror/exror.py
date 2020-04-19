@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys, os
+import sys, os, re
 import numpy as np
 import pyexr
 from skimage.metrics import structural_similarity, mean_squared_error, peak_signal_noise_ratio
@@ -87,9 +87,27 @@ if len(sys.argv) < 3:
 img_refer_name = sys.argv[1]
 img_refer = pyexr.read(img_refer_name).astype(np.float64)
 
-print()
+def GetSPP(file_name):
+	spp = re.findall(r'\d*(?=\.exr)', file_name)
+	if spp[0]:
+		return int(spp[0])
+	spp = re.findall(r'\d*(?=K\.exr)', file_name)
+	if spp[0]:
+		return int(spp[0]) * 1024
+	spp = re.findall(r'\d*(?=K\.exr)', file_name)
+	if spp[0]:
+		return int(spp[0]) * 1024
+	return sys.maxsize
+
+img_noisy_names = {}
 for i in range(2, len(sys.argv)):
 	img_noisy_name = sys.argv[i]
+	spp = GetSPP(img_noisy_name)
+	img_noisy_names[spp] = img_noisy_name
+
+print()
+for k in sorted(img_noisy_names.keys()):
+	img_noisy_name = img_noisy_names[k]
 	img_noisy = pyexr.read(img_noisy_name).astype(np.float64)
 
 	if img_noisy.shape != img_refer.shape:
