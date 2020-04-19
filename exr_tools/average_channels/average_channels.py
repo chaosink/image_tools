@@ -5,8 +5,8 @@ import sys
 import numpy as np
 
 if len(sys.argv) != 3:
-	print("average: Average all channels into a single one.")
-	print("Usage: average.py input_file output_file")
+	print("average_channels: Average all channels into a single one.")
+	print("Usage: average_channels.py input_file output_file")
 	exit()
 
 rgb = pyexr.read(sys.argv[1])
